@@ -1,5 +1,12 @@
 - whenever there are changes made in .env, manually restart the server, nodemon doesn't work.
 
+process.env.PORT
+--> access env variables in nodejs for configuring port on which a server should listen
+why? --> deployment flexibilty --> config mgmnt
+-->When developing web apps, best to configure the server to listen on a port defined by an env variable. This allows flexibility, avoids hardcoding the port number.
+
+
+
 request can be used to extract plenty of info.
 req.params ---> url data extraction
 req.body ---> data in forms, json etc..
@@ -36,3 +43,10 @@ statusCode --> info responses (100 - 199)
 --> client error response (400 - 499)
 --> Server error response (500 - 599)
 
+Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));
+--> this line.. is used to ensure that result of reqhandler is treated as promise. this req handler can be an async function that returns a promise or sync function 
+--> if reqhandler throws an error/returns rejected promise, error is passed to next function.
+
+Error.captureStackTrace(this, this.constructor);
+--> error.captureStackTrace is method available in V8 engine, allows u to capture stack trace at a specific point and customize stack trace.
+-->
