@@ -1,0 +1,38 @@
+- whenever there are changes made in .env, manually restart the server, nodemon doesn't work.
+
+request can be used to extract plenty of info.
+req.params ---> url data extraction
+req.body ---> data in forms, json etc..
+data can be accessed through even cookies.
+when using cookie-parser middleware, this prop is an obj containing cookies sent by req.
+cookie-parser need to be installed through npm package --> npm i cookie-parser ---> require('cookie-parser') / import
+
+CORS package ---> enable to make settings [cross-origin-resource-sharing] ---> npm i cors --> require/import
+app.use(cors()) --> origin, credentials etc..
+for middleware / config settings ----> app.use() ***
+
+***************/* important configurations of express */ *****************
+app.use(express.json({
+    limit: "16kb" ---> server power
+})) --> configuring json and accepting
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+extended:true ---> nesting enabled in objects
+app.use(express.static("public")); ---> to store files and folders in [public], which is accessible to anyone. [public]
+
+app.use(cookie-parser())
+cookie-parser imported ---> so that through we can access cookies and set cookies in user's browser 
+{--------------------------------------------------------------------------------------------------------------------}
+middleware ---> functionality between req and res cycle.
+res returns only if middleware execution is successfull else req is reverted.
+for example: /instagram -----> middleware ------> res.send("sathwik")
+the middleware can check things like ----> if user is logged in / check if user is admin 
+middleware can be more than one... order of middleware declaration decides their order of execution
+middleware has 3 params ---> (req, res, next)
+"next" ---> used to execute the next middleware if written else discard.
+
+statusCode --> info responses (100 - 199)
+--> successfull response ( 200 - 299)
+--> redirection response ( 300 - 399 )
+--> client error response (400 - 499)
+--> Server error response (500 - 599)
+
