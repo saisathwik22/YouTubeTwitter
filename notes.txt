@@ -42,7 +42,7 @@ statusCode --> info responses (100 - 199)
 --> redirection response ( 300 - 399 )
 --> client error response (400 - 499)
 --> Server error response (500 - 599)
-
+----------------------------------------------------------------------------------------------------------------------
 Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));
 --> this line.. is used to ensure that result of reqhandler is treated as promise. this req handler can be an async function that returns a promise or sync function 
 --> if reqhandler throws an error/returns rejected promise, error is passed to next function.
@@ -50,3 +50,82 @@ Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));
 Error.captureStackTrace(this, this.constructor);
 --> error.captureStackTrace is method available in V8 engine, allows u to capture stack trace at a specific point and customize stack trace.
 -->
+----------------------------------------------------------------------------------------------------------------------
+(optimal way)in Mongodb, if any field should be made searchable ---> make index: true;
+but donot use index in every field, use it wisely
+
+(npm package)mongoose-aggregate-paginate-v2 --> allows to write aggregation queries.
+
+mongoose allows to write your own plug-ins using schemaName.plugin()
+----------------------------------------------------------------------------------------------------------------------
+bcrypt -->library made on core nodejs packages --> helps you to hash your password
+bcyrpjs --> optimized in plain JS with 0 dependencies, compatible with bcrypt 
+
+JWT - Json web token --> tokens are made which are not human readable using cryptic algorithm
+three parts --> headers(algo and token type), payload(data), verify signature
+example: header
+{
+    "alg": "HS256",
+    "typ": "JWT"
+}
+above header is turned into ---> eyHnHSDJNnsnfhjjsnHSDFHNjbdfXCVJ9
+example: payload (data)
+{
+    "name": "sai",
+    "iat": 1516239022
+}
+above data is encrypted as eyJzdWIi0iTxMjM0NTY3ODKwiJIhiwINNKNSF39hHJFJ82IYFQ
+example: verify signature
+HMACSHA256(
+    base64UrlEncode(header) + "." +
+    base64UrlEncode(payload),
+    your-256-bit-secret
+) secret base64 encoded
+above "secret" is the one that makes every token unique, else anyone could decode the algo. [secret=protection]
+
+How to encrypt now?
+import jwt and bcrypt
+direct encryption not possible, so take help of hooks of mongoose
+"pre hook" --> middleware, run just before saving the data, so select "save" in userSchema.pre("save")
+userSchema.pre("event", callback function);
+callback function should have param next, coz its a middleware.
+"next()" should be called to pass on to the next middleware.
+----------------------------------------------------------------------------------------------------------------------
+ENCRYPTING the PASSWORD (check "user.model.js" file for code)
+issue:
+userSchema.pre("save", async function (next) {
+  this.password = bcrypt.hash(this.password, 10);
+  next();
+});
+whenever the data is saved, the password also keeps on saving/changing, problem is entire password field's access is there with encrypt function, so it keeps on running the encrypt function.
+solution:
+So, make sure, you set the functionality such that encryption function runs only when password field is modified directly by user.
+include --> if (!this.isModified("password")) return next();
+this means that if password is not modified then go on with next()
+else if its modified --> then go on with bcrypt.hash and then next()
+---> check user.model.js
+----------------------------------------------------------------------------------------------------------------------
+methods can be created in mongoose
+
+password comparison using "bcrypt" [true/false]
+adding property "isPasswordCorrect"
+userSchema.methods.isPasswordCorrect = async func(pass) {
+    return await bcrypt.compare(pass, this.pass)
+}
+using await because takes time.
+pass --> string data, this.pass --> encrypted string data
+result is true/false format
+----------------------------------------------------------------------------------------------------------------------
+JWT is a bearer token, means its like a key to database.
+whoever bears this token, is granted the access of database.
+jwt tokens --> private key, expiry duration
+
+access token expiry less than refresh token expiry
+access token will not be stored in database but refresh token will be stored in database
+
+refreshToken has less information due to frequent refreshes
+
+jwt.sign() used to synchronously convert given payload to Json webtoken payload.
+
+writing accesstokengenerator using jwt.sign()
+writing refreshtokengenerator using jwt.sign()
