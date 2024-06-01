@@ -132,3 +132,31 @@ writing refreshtokengenerator using jwt.sign()
 ----------------------------------------------------------------------------------------------------------------------
 file handling --> backend engineer's work.
 file upload --> seperate utility function, resusable
+
+user upload file using multer and keep in local server
+use cloudinary pick file from local storage and then put it on server.
+if file uploaded, remove it from server.
+
+code in cloudinary.js --> reusable --> save it
+
+fs --> file system in nodejs--> read, write, remove and all other operations on file [Async/sync]
+fsPromises.unlink(path) --> if path refers to symbolic link, then link is removed without affecting file or dir its refering to. removing the link referred by path, without impacting the rest of the file/directory.
+path... string or buffer or url
+returns... promise (undefined if success)
+
+cloudinary details in ".env" file
+store cloud name, api key , api secret in .env file and get them using process.env.cloudname/apikey/apisecret.
+to upload file on cloudinary --> cloudinary.uploader.upload(filepath, { ... any fields in key:value format } )
+
+creating middleware using multer
+import multer from "multer";
+const upload = multer({ dest: '/uploads/' })
+app.post('/profile', upload.single('avatar'), funcX(req, res, next) {
+    //code... single photo
+})
+here we can use -->  upload.array('photos', 12) for array of photos
+ ---> upload.fields( [ { key1:"value1", key2:"value2" } ] )
+ so the funcn between '/path' and handlerfunc funcX is middleware....
+
+check out multer.middleware.js file for **
+----------------------------------------------------------------------------------------------------------------------
