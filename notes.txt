@@ -5,6 +5,32 @@ process.env.PORT
 why? --> deployment flexibilty --> config mgmnt
 -->When developing web apps, best to configure the server to listen on a port defined by an env variable. This allows flexibility, avoids hardcoding the port number.
 
+can also store process.env.PORT in any variable and use
+--------------------------------------------------------------------------------------------------------------------------
+replacement of this written in index.js page, mongodb connection point.
+
+APPROACH 1: using try catch for error handling and using async await...
+import express from "express";
+const app = express();
+(async () => {
+  try {
+    await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`);
+    app.on("error", (error) => {
+        console.log("ERRR: ", error)
+        throw error
+    })
+
+    app.listen(process.env.PORT, () => {
+        console.log(`App is listening on port ${process.env.PORT}`);
+    })
+
+  } catch (error) {
+    console.log("Error: ", error);
+    throw err;
+  }
+})();
+
+--------------------------------------------------------------------------------------------------------------------------
 
 
 request can be used to extract plenty of info.
@@ -18,7 +44,7 @@ CORS package ---> enable to make settings [cross-origin-resource-sharing] ---> n
 app.use(cors()) --> origin, credentials etc..
 for middleware / config settings ----> app.use() ***
 
-***************/* important configurations of express */ *****************
+---------------------------------/* important configurations of express */ -----------------------------------------------
 app.use(express.json({
     limit: "16kb" ---> server power
 })) --> configuring json and accepting
@@ -28,7 +54,7 @@ app.use(express.static("public")); ---> to store files and folders in [public], 
 
 app.use(cookie-parser())
 cookie-parser imported ---> so that through we can access cookies and set cookies in user's browser 
-{--------------------------------------------------------------------------------------------------------------------}
+--------------------------------------------------------------------------------------------------------------------------
 middleware ---> functionality between req and res cycle.
 res returns only if middleware execution is successfull else req is reverted.
 for example: /instagram -----> middleware ------> res.send("sathwik")
@@ -159,4 +185,23 @@ here we can use -->  upload.array('photos', 12) for array of photos
  so the funcn between '/path' and handlerfunc funcX is middleware....
 
 check out multer.middleware.js file for **
-----------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+====> refer app.js and user.routes.js
+
+app.use("/api/v1/users", userRouter) ---> in app.js
+
+router.route("/register").post(userRegister); ---> user.routes.js
+
+in the url localhost:8000/users/......./
+....... after /api/v1/users/ the next part of "url" accessed from user.routes.js
+localhost:8000/api/v1/users/register ---> /users accessed in app.use in app.js
+/users when accessed, sends us to route userRouter that is user.routes.js
+now here sub-routes written like /registers, /login which in-turn refer controller methods for further interaction.
+example: router.route("/register").post(registerUser);
+registerUser written in controller
+
+
+when you export like this ---> export { funcName },---> then import it also import { funcName } from "..path" 
+when you export like this ---> export default funcName ----> then you can import ---> import "nameofyourchoice" from "path"
+
