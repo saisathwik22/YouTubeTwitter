@@ -1,0 +1,74 @@
+HTTP - Hyper Text Transfer Protocol
+
+http headers
+metadata ---> key value sent along with request and response {key: value}
+caching, authentication, manage state
+X-perfix --> 2012 (X - deprecated)
+
+Request headers ---> from client
+Response headers ---> from server
+representation headers ---> encoding / compression
+payload headers ---> data
+
+Most common Headers
+Accept : application/json (what kind of data you are gonna accept)
+User-Agent : from which application request has been recieved (postman/which browser/which engine/which OS...etc)
+Authorization : Bearer <token> (beared token JWT)
+Content-Type : img/pdf/...etc
+Cookies : {key: value} pairs
+Cache-Control : when the data should expire
+
+CORS Headers:
+Access-Control-Allow-Origin ---> internal policies of company, permissions etc..
+Access-Control-Allow-Credentials
+Access-Control-Allow-Method
+
+Security Headers:
+Cross-Origin-Embedded-Policy
+Cross-Origin-Opener-Policy
+Content-Security-Policy
+X-XSS-Protection
+
+
+HTTP Methods:
+Basic set of operations that can be used to interact with server
+
+GET : retrieve a resource
+HEAD : no msg body (response headers only)
+OPTIONS : what operations are available
+TRACE : loopback test (get same data)
+DELETE : remove  resource
+PUT : replace a resource
+POST : interact with resource (mostly add)
+PATCH : change part of resource
+
+HTTP Status Code:
+1xx --> Informational
+2xx --> Success
+3xx --> Redirection
+4xx --> Client error
+5xx --> Server error
+
+100 = continue / 102 = processing / 200 = OK / 201 = created / 202 = accepted / 307 = temporary redirect / 308 = permanent redirect / 400 = Bad request /
+401 = unauthorized / 402 = payment required / 404 = not found / 500 = internal server error / 504 = gatewat time out /
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
