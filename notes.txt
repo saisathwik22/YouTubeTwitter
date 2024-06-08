@@ -185,7 +185,10 @@ here we can use -->  upload.array('photos', 12) for array of photos
  so the funcn between '/path' and handlerfunc funcX is middleware....
 
 check out multer.middleware.js file for **
---------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+ROUTER AND CONTROLLER WITH DEBUGGING
+
 
 ====> refer app.js and user.routes.js
 
@@ -205,3 +208,64 @@ registerUser written in controller
 when you export like this ---> export { funcName },---> then import it also import { funcName } from "..path" 
 when you export like this ---> export default funcName ----> then you can import ---> import "nameofyourchoice" from "path"
 
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+in user.routes.js
+
+  upload.fields([
+    {
+      name: "avatar",
+      maxCount: 1,
+    },
+    {
+      name: "coverImage",
+      maxCount: 1,
+    },
+  ]),
+
+upload.fields ----> method provided by multer that allows handling multiple file fields. takes an array of objects.
+name:avatar, maxCount:1 ---> this config tells the middleware to handle file name field "avatar" and allows max 1 file for this field.
+same goes with coverImage config.
+
+
+VALIDATING GIVEN USERNAME AND EMAIL :
+
+at user.controller.js
+check each field of array and trim the whitespaces and even after trimming the whitespaces if field is empty then error.
+some checks if at least one element passes the provided test
+trim removes whitespaces from both ends of string.
+if (
+  [fullName, email, username, password].some((field) => field?.trim() === "")
+) {
+  throw new ApiError(400, "All fields are required");
+}
+
+at user.controller.js
+.findOne() is a query method provided by ORM library to find a single docx in DB that matches specified criteria.
+$or -- logical OR operation.
+checking if given criteria is found in db, if its found then throw an error.
+
+at user.controller.js
+const avatarLocalPath = req.files?.avatar[0]?.path;
+req.files ---> access the files uploaded through multer
+req.files? ---> if the req does not have files property, expression doesnot throw error, instead evaluates it to undefined.
+req.files?.avatar ---> if req.files doesnt exist or null or undefined, accessing avatar doesnot throw error, but evaluates to undefined.
+req.files?.avatar[0] ---> if req.files?.avatar exists access the first element [0], else evaluate to undefined.
+req.files?.avatar[0]?.path ---> if req.files?.avatar[0] exists, it attempts to access path, if all properties in chain exists then path will be assigned, else null or undefined is assigned.
+
+same goes with const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+chaining optional operator : "?."
+object?.property ---> if object exists, then access the property given
+
+Mongodb assigns "_id" with every entry.
+
+
+finding user by _id, if found then remove his password and refreshToken.
+
+const createdUser = await User.findById(user._id).select(
+  "-password -refreshToken"
+)
+.select() ---> specifies which doc fields to be included and excluded. "-" for excluded
+remove password and refersh token after user found in database
