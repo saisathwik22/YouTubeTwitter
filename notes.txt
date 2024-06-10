@@ -269,3 +269,65 @@ const createdUser = await User.findById(user._id).select(
 )
 .select() ---> specifies which doc fields to be included and excluded. "-" for excluded
 remove password and refersh token after user found in database
+
+--------------------------------------------------------------------------------------------------------------------
+Access token are short lived, refresh token are long lived.
+
+access token used to validate user, refresh token used to verify user and give new access token to user.
+
+if login session expired, refresh token helps here. refresh token provided to user as well as databse.
+everytime no need to enter password, if you have refresh token, hit an endpoint, from there if refresh token with user and database matches, then user will be provided new access token.
+
+in user.controller.js
+  // **NOTE: method access with "user" not with "User", because methods like findOne are mongodb methods, so they are applied on "User", methods created by us like isPasswordCorrect are applied on "user".
+
+in user.controller.js
+generateAccessAndRefreshToken() ---> finds user bu id, generates both tokens, saves the refresh token in database
+returns both the tokens
+
+below properties, make cookies un-modifiable from frontend, but modifiable from server.
+httpOnly: true,
+secure: true,
+
+--------------------------------------------------------------------------------------------------------------------
+auth.middleware.js
+---> verify is user exists or not.
+when we logged in, we were provided with refresh token and access token.
+check whether user is sending accessToken with a cookie or request header, so check both "?."
+
+JWT token ---> Authorization: Bearer <token>
+  const token =
+    req.cookies?.accessToken ||
+    req.header("Authorization")?.replace("Bearer ", "");
+most frequently you get Authorization header.
+in header, we send {Authorization: Bearer} as key-value pair
+if cookie or header contain access token, check for Authorization key in it,
+if key found, replace bearer with empty string without space.
+now store it in a token.
+
+so now, eventually we have got a token's access into the varible "token"
+
+if token not found in "token" throw error
+
+now import jwt into auth.middleware.js
+
+token can be generated but can be decoded only if he has secret key.
+so verify token and access-token-secret-key and store it in "decodedToken" variable
+jwt.verify()
+
+await User.findById(decodedToken?._id).select("-password -refreshToken")
+if user was found and token was decoded, remove password and refreshToken fields using .select() and store it in "user".
+if "user" not found, throw new api error saying invalid access token.
+
+add new object to this request and call next()
+
+login verification done by --> auth middleware
+
+--------------------------------------------------------------------------------------------------------------------
+in user.controller.js for logoutUser functionality
+
+find User by Id and set refreshToken to undefined, and set a new property "new" to true.
+include options = {httpOnly, secure to true}
+return response 200 and clear both access and refresh token cookies with options passed as arguments,
+and return new api response "user logged out"
+--------------------------------------------------------------------------------------------------------------------
