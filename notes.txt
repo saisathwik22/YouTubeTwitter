@@ -331,3 +331,18 @@ include options = {httpOnly, secure to true}
 return response 200 and clear both access and refresh token cookies with options passed as arguments,
 and return new api response "user logged out"
 --------------------------------------------------------------------------------------------------------------------
+access and refresh token --> purpose: user need not repeatedly give his email and password.
+access token --> short lived. has an expiry. once expired, user needs to enter email and password and refresh the access token.
+refreshToken ---> stored in database aswell, requested as and when wanted.
+
+if user's access token has been expired, 401 request arises ---> hit an endpoint and get your access token refreshed from over there (new access token given)
+
+how new token is recieved?
+
+when you hit an endpoint, you send a refresh token with the request as well.
+now your refresh token is compared with refreshtoken in database, if it matched, then a new session started and new access token is issued to user and refreshtoken gets updated and saved in database. 
+
+accessToken expired --> hit and endpoint with refreshtoken in request --> refreshToken matched --> new Session --> new accessToken.
+
+
+now create and endpoint in user.controller.js
