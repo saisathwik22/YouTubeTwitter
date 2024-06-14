@@ -351,3 +351,24 @@ create subscription model file
 --> create subscriptionschema and export as Subscription
 
 subscription model ---> has id, subscriber(objectId users), channel(objectId users), createdAt, updatedAt
+
+user.controller.js
+changeCurrentPassword (async) ---> make the user change the currentPassword.
+need to check whether user is logged in already or not.
+take old password and new password from user
+
+if user is able to change the password --> this means he is already logged in
+
+pick up id from req.user and find user on the basis of the id and store it in user.
+use isPasswordCorrect method on "user" and pass on the oldPassword into the method.
+if password incorrect ---> throw error.
+if password correct ---> set new password --> user.password = newpassword --> user.save({validateBeforeSave: false})
+it takes time, so use await.
+now before saving the new password ---> hash the password because the password was modified.
+send user a message saying password change successfull
+
+can also include confirm password, ---> match newpassword with confirm password ---> if mismatches then throw error.
+
+File updating:
+plugin multer middleware to accept files
+allow only logged in users to update
