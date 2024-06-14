@@ -372,3 +372,23 @@ can also include confirm password, ---> match newpassword with confirm password 
 File updating:
 plugin multer middleware to accept files
 allow only logged in users to update
+--------------------------------------------------------------------------------------------------------------------
+
+THEORY:
+
+subscriptionSchema --> subscribers and channel
+Users --> a,b,c,d,e
+channel --> cac,hcc,fcc
+above both are users only.
+
+one user --> can subscribe to multiple channel
+one channel --> can be subscribed by multiple users.
+relation between a channel and user ---> maintained in a document object model.
+each and every subscription by a user to a channel ---> creates a document object model.
+
+to find out count of subscribers of a channel ---> select the documents in which your channel is present
+--> number of docs in which your channel is present ---> gives the subscription count.
+
+to find out count of channels a user has subscribed to ---> number of docs in which the user is present --> gives the user's subscribed count.
+
+can also access the channel list of a user.
