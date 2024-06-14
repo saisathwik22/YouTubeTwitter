@@ -347,3 +347,7 @@ accessToken expired --> hit and endpoint with refreshtoken in request --> refres
 
 now create and endpoint in user.controller.js
 --------------------------------------------------------------------------------------------------------------------
+create subscription model file
+--> create subscriptionschema and export as Subscription
+
+subscription model ---> has id, subscriber(objectId users), channel(objectId users), createdAt, updatedAt
