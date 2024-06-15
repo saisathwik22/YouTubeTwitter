@@ -483,3 +483,27 @@ $project: {
 
 in channel = user.aggregate we have used $match, $lookup, $addFields, $project
 $match gets only one user's profile.
+
+-------------------------------------------------------------------------------------------------------------------------
+INTERVIEW Specific: ****
+what does req.user._id give? --> we get string which is ObjectId('655bc4d71....'),which is not a mongodb id.
+if you actually need a mongodb id you need entire ObjectId('655bc4d71....')
+but we are using mongoose --->so mongoose converts the string automatically into a mongodb id internally.
+
+but if we want to convert manually, then use
+User.aggregate([
+  {
+    $match: {
+      _id: new mongoose.Types.ObjectId(req.user._id); // we get _id as mongodb object.
+    }
+  }
+])
+
+***
+ObjectId ---> deprecated, so use ObjectId.createFromHexString(req.user._id) --> create an objectid from hexString representation of an objectId.
+***
+
+watchHistory is a object videos
+in videos ---> owner object links to users.
+
+lookup to videos first, then add a nested lookup to lookup to users, because videos point to users objectid.
