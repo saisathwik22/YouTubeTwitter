@@ -392,3 +392,94 @@ to find out count of subscribers of a channel ---> select the documents in which
 to find out count of channels a user has subscribed to ---> number of docs in which the user is present --> gives the user's subscribed count.
 
 can also access the channel list of a user.
+-----------------------------------------------------------------------------------------------------------------------------
+join subscriptions with user ---> aggregation pipeline
+
+Aggregation Pipeline :
+--> consists of one or more stages that process documents:
+--> each stage performs an operation on input documents.
+--> docs that are output from a stage are passed to next stage.
+--> aggr pipeline can return results for groups of docs.
+
+db.name.aggregate( [
+  stage 1
+  {
+    $randomName: { property: value }
+  },
+  stage 2
+  {
+    $randomName2: { property: value }
+  }
+])
+
+[
+  //pipeline1
+  {}
+  //pipeline2
+  {}..
+]
+lookup ---> to know how both docs join
+addFields --> to add new fields
+[
+  {
+    $lookup: {
+      from: "collection",
+      localField: "field",
+      foreignField: "field",
+      as: "result"
+    }
+  },
+  {
+    $addFields: {
+      newField: expression, ..
+    }
+  }
+]
+newField --> can be an array also --> newField :{ }
+first value of result ---> example if result is array ---> result[0]
+
+Usage of aggregation example
+[
+  {
+    $lookup: {
+      from: "authors",
+      localField: "author_id",
+      foreignField: "_id",
+      as: "author_details"
+    }
+  },
+  {
+    $addFields: {
+      author_details: {
+        $arrayElemAt: ["$author_details", 0]
+      }
+    }
+  }
+]
+check out addstage+ to checkout stages and fields and learn about them.
+
+$project: passes along the docs with requested fields to next stage in pipeline. specified fields can be existing fields from input docs or newly computed fields.
+
+user.controller.js
+
+getUserChannelProfile ---> async function
+--> extract username from req.params
+--> to go to a profile we generally use the route /username
+--> this username should be extracted from url so we use req.params
+--> if req.params doesnt have any username evem after trimming ---> throw error username not found.
+[ example: we want to go to profile sai-sathwik, the route for it is localhost:port/users/api/sai-sathwik, we want to extract sai-sathwik from given url using req.params.trim ---> if sai-sathwik not found then throw error ]
+
+Conventional Way of Aggregation:
+--> if we recieve any username from req.params --> by conventional way ---> we try and find the username in database using User.find({username}) --> get all user details --> then we apply Aggregation on the basis of user._id
+
+AGGREGATION PIPELINE WAY:
+--> we have $match field --> this will find our required document from all the docs automatically.
+
+properties inside $project field which are marked 1 are projected .
+$project: {
+  username: 1,
+  email: 1,.....
+}
+
+in channel = user.aggregate we have used $match, $lookup, $addFields, $project
+$match gets only one user's profile.
