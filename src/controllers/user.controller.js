@@ -182,8 +182,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
-        refreshToken: undefined,
+      $unset: {
+        refreshToken: 1, // this removes field from document.
       },
     },
     {
@@ -432,11 +432,13 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 });
 
 const getWatchHistory = asyncHandler(async (req, res) => {
+  console.log(req.user?._id);
+
   const user = await User.aggregate([
     {
       $match: {
-        // ObjectId was marked deprecated, so use HexString instead.
-        _id: new mongoose.Types.ObjectId.createFromHexString(req.user._id),
+        // ObjectId will show deprecated, but its working use it.
+        _id: new mongoose.Types.ObjectId(req.user._id),
       },
     },
     {
