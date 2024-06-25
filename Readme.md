@@ -1,6 +1,6 @@
 # BACKEND of Youtube + Twitter
 
-# Introduction:
+## Introduction:
 This is a Youtube + Twitter backend project that includes key functionalities of youtube and tweet functionality from twitter.
 
 Important Links:
@@ -8,50 +8,50 @@ Important Links:
 - [API Documentation](https://documenter.getpostman.com/view/28570926/2s9YsNdVwW) (credit : Hruthik-28)
 - [Model link](https://app.eraser.io/workspace/YtPqZ1VogxGy1jzIDkzj?origin=share) (credit : chaiaurcode)
 
-# FEATURES:
+## FEATURES:
 
-# User Management:
+### User Management:
 
 - Register, login, logout, password reset
 - Other details like cover image, avatar management
 - watch history tracking
 
-# Video Management:
+### Video Management:
 
 - Video upload, publishing, editing, deletion, pagination, search and sorting.
 - publish/unpublish control
 
-# Tweet Management:
+### Tweet Management:
 
 - tweet creation, publishing, updation, deletion, display
 
-# Subscription Management:
+### Subscription Management:
 
 - Channel subscriptions
 - subscriberes list display, subscribed channels list display
 
-# Playlist Management:
+### Playlist Management:
 
 - creation, updation, deletion, viewing
 
-# Like Management:
+### Like Management:
 
 - liking, unliking videos, comments and tweets , viewing liked videos
 
-# Comment Management:
+### Comment Management:
 
 - adding, updating, deleting
 
-# Dashboard:
+### Dashboard:
 
 - View channel statistics (views, likes, subscribers etc)
 - accessing uploaded videos
 
-# Health check:
+### Health check:
 
 - endpoint to verify backed's health
 
-# Technologies Used:
+## Technologies Used:
 
 - Node.js
 - Express.js
