@@ -63,13 +63,13 @@ Important Links:
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/Hruthik-28/youtube-twitter.git
+    git clone https://github.com/saisathwik22/Backend-project.git
     ```
 
 2. **Install dependencies:**
 
     ```bash
-    cd youtube-twitter
+    cd Backend-project
     npm install
     ```
 
