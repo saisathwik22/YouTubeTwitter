@@ -58,6 +58,9 @@ Important Links:
 - MongoDB
 - Cloudinary
 
+![Uploading Screenshot (43).png…]()
+
+
 ## Installation and Setup
 
 1. **Clone the repository:**
